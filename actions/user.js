@@ -1,7 +1,8 @@
 "use server"
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/prisma";
-import { industries } from "@/data/industries";
+import { success } from "zod";
+
 
 export async function updateUser(data) {
     //CHECK IF THE USER LOGGED IN OR NOT
@@ -63,10 +64,10 @@ export async function updateUser(data) {
             // }
 
         )//transaction
-        return result.user;
+        return {success:true, ...result};
     } catch (error) {
         console.error("Error updating user and industry:", error.message);
-        throw new Error("Failed to update profile");
+        throw new Error("Failed to update profile"+error.message);
     }
 
 }
