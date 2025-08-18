@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import HeroSection from "@/components/hero";
 import LightRays from "@/components/ui/LightRays ";
 import Link from "next/link";
@@ -50,7 +48,7 @@ export default function LandingPage() {
   />
 </div>
     <div className="grid-background"></div>
-    <Header/>
+    
 
     <HeroSection />
 
@@ -233,9 +231,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-       
-
-      <Footer/>
     
     </>
       
