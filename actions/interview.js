@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+//GEENERATE QUIZS   
 export async function generateQuiz() {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
@@ -46,6 +47,7 @@ export async function generateQuiz() {
         const quiz = JSON.parse(cleanedText);
 
         return quiz.questions;
+        
     } catch (error) {
         console.error("Error generating quiz:", error);
         throw new Error("Failed to generate quiz questions");
