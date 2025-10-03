@@ -1,28 +1,32 @@
-import { auth } from "@clerk/nextjs/server";
+"use server";
+
 import { db } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-//GEENERATE QUIZS   
 export async function generateQuiz() {
-    const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-    const user = await db.user.findUnique({
-        where: { clerkUserId: userId },
-        select: {
-            industry: true,
-            skills: true,
-        },
-    });
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+    select: {
+      industry: true,
+      skills: true,
+    },
+  });
 
-    if (!user) throw new Error("User not found");
+  if (!user) throw new Error("User not found");
 
-    const prompt = `
-    Generate 10 technical interview questions for a ${user.industry
-        } professional${user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
-        }.
+  const prompt = `
+    Generate 10 technical interview questions for a ${
+      user.industry
+    } professional${
+    user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
+  }.
     
     Each question should be multiple choice with 4 options.
     
@@ -39,23 +43,20 @@ export async function generateQuiz() {
     }
   `;
 
-    try {
-        const result = await model.generateContent(prompt);
-        const response = result.response;
-        const text = response.text();
-        const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-        const quiz = JSON.parse(cleanedText);
+  try {
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
+    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+    const quiz = JSON.parse(cleanedText);
 
-        return quiz.questions;
-        
-    } catch (error) {
-        console.error("Error generating quiz:", error);
-        throw new Error("Failed to generate quiz questions");
-    }
-
+    return quiz.questions;
+  } catch (error) {
+    console.error("Error generating quiz:", error);
+    throw new Error("Failed to generate quiz questions");
+  }
 }
 
-//SAVE QUIZS
 export async function saveQuizResult(questions, answers, score) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -81,9 +82,11 @@ export async function saveQuizResult(questions, answers, score) {
   let improvementTip = null;
   if (wrongAnswers.length > 0) {
     const wrongQuestionsText = wrongAnswers
-      .map((q) =>
+      .map(
+        (q) =>
           `Question: "${q.question}"\nCorrect Answer: "${q.answer}"\nUser Answer: "${q.userAnswer}"`
-      ).join("\n\n");
+      )
+      .join("\n\n");
 
     const improvementPrompt = `
       The user got the following ${user.industry} technical interview questions wrong:
