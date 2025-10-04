@@ -64,6 +64,17 @@ export default function Quiz() {
     }
 
     return (
-        <div>q</div>
+        <Card className="mx-2">
+                <CardHeader>
+                    <CardTitle>Ready to test your knowledge?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">
+                        This quiz contains 10 questions specific to your industry and
+                        skills. Take your time and choose the best answer for each question.
+                    </p>
+                </CardContent>
+                
+            </Card>
     );
 }
