@@ -20,14 +20,14 @@ import { BarLoader } from "react-spinners";
 
 
 export default function Quiz() {
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState([]);
+    const [currentQuestion, setCurrentQuestion] = useState(0); //track current question index
+    const [answers, setAnswers] = useState([]); //store user's answers 
     const [showExplanation, setShowExplanation] = useState(false);
 
     const {
         loading: generatingQuiz, //boolean
         fn: generateQuizFn,
-        data: quizData, //array of questions that contains question, options, correctAnswer, explanation
+        data: quizData, //array of questions that contains question, options, correctAnswer, explanation that came from interview.js
     } = useFetch(generateQuiz);
 
     useEffect(() => {
@@ -36,12 +36,37 @@ export default function Quiz() {
         }
     }, [quizData]); //if quizData changes, initialize answers array 
 
+
+    //----------------------Functions---------------------- 
     //Handle answer  
     const handleAnswer = (answer) => {
         const newAnswers = [...answers]; // Create a copy of the answers array first
         newAnswers[currentQuestion] = answer;
         setAnswers(newAnswers);
     };
+
+
+    //handle next question or finish quiz
+      const handleNext = () => {
+    if (currentQuestion < quizData.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setShowExplanation(false);
+    } else {
+    //   finishQuiz();
+    }
+  };
+
+  // Calculate score (answer contains the selected answers and the quizData contains the correct answers that came from interview.js)
+  const calculateScore = () => {
+    let correct = 0;
+    answers.forEach((answer, index) => {
+      if (answer === quizData[index].correctAnswer) {
+        correct++;
+      }
+    });
+    return (correct / quizData.length) * 100;
+  };
+
 
     // loder
     if (generatingQuiz) {
