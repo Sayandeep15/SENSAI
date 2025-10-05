@@ -13,7 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { generateQuiz, saveQuizResult } from "@/actions/interview";
-// import QuizResult from "./quiz-result";
+import QuizResult from "./quiz-result";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 
@@ -24,11 +24,20 @@ export default function Quiz() {
     const [answers, setAnswers] = useState([]); //store user's answers 
     const [showExplanation, setShowExplanation] = useState(false);
 
+    // fetching from generateQuiz  functions in interview.js
     const {
         loading: generatingQuiz, //boolean
         fn: generateQuizFn,
         data: quizData, //array of questions that contains question, options, correctAnswer, explanation that came from interview.js
     } = useFetch(generateQuiz);
+
+    // fetching from  saveQuizResult functions in interview.js
+    const {
+        loading: savingResult,
+        fn: saveQuizResultFn,
+        data: resultData,
+        setData: setResultData,
+    } = useFetch(saveQuizResult);
 
     useEffect(() => {
         if (quizData) {
@@ -38,6 +47,7 @@ export default function Quiz() {
 
 
     //----------------------Functions---------------------- 
+
     //Handle answer  
     const handleAnswer = (answer) => {
         const newAnswers = [...answers]; // Create a copy of the answers array first
@@ -47,31 +57,57 @@ export default function Quiz() {
 
 
     //handle next question or finish quiz
-      const handleNext = () => {
-    if (currentQuestion < quizData.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setShowExplanation(false);
-    } else {
-    //   finishQuiz();
-    }
-  };
+    const handleNext = () => {
+        if (currentQuestion < quizData.length - 1) {
+            setCurrentQuestion(currentQuestion + 1);
+            setShowExplanation(false);
+        } else {
+            finishQuiz();
+        }
+    };
 
-  // Calculate score (answer contains the selected answers and the quizData contains the correct answers that came from interview.js)
-  const calculateScore = () => {
-    let correct = 0;
-    answers.forEach((answer, index) => {
-      if (answer === quizData[index].correctAnswer) {
-        correct++;
-      }
-    });
-    return (correct / quizData.length) * 100;
-  };
+    // Calculate score (answer contains the selected answers and the quizData contains the correct answers that came from interview.js)
+    const calculateScore = () => {
+        let correct = 0;
+        answers.forEach((answer, index) => {
+            if (answer === quizData[index].correctAnswer) {
+                correct++;
+            }
+        });
+        return (correct / quizData.length) * 100;
+    };
 
+    const finishQuiz = async () => {
+        const score = calculateScore();
+        try {
+            await saveQuizResultFn(quizData, answers, score);
+            toast.success("Quiz completed!");
+        } catch (error) {
+            toast.error(error.message || "Failed to save quiz results");
+        }
+    };
+
+    const startNewQuiz = () => {
+        setCurrentQuestion(0);
+        setAnswers([]);
+        setShowExplanation(false);
+        generateQuizFn();
+        setResultData(null);
+    };
 
     // loder
     if (generatingQuiz) {
         return <BarLoader className="mt-4" width={"100%"} color="gray" />;
     }
+
+    // Show results if quiz is completed
+  if (resultData) {
+    return (
+      <div className="mx-2">
+        <QuizResult result={resultData} onStartNew={startNewQuiz} />
+      </div>
+    );
+  }
 
     // If no quiz data, show start quiz card
     if (!quizData) {
@@ -137,7 +173,10 @@ export default function Quiz() {
                     </Button>
                 )}
 
-                <Button>{currentQuestion < quizData.length - 1 ? "Next Question" : "Finish Quiz"}</Button>
+                <Button onClick={handleNext} disabled={!answers[currentQuestion] || savingResult} className="ml-auto">
+                    {savingResult && (<BarLoader className="mt-4" width={"100%"} color="gray" />)}
+                    {currentQuestion < quizData.length - 1 ? "Next Question" : "Finish Quiz"}
+                </Button>
             </CardFooter>
 
         </Card>
