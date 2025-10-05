@@ -25,9 +25,9 @@ export default function Quiz() {
     const [showExplanation, setShowExplanation] = useState(false);
 
     const {
-        loading: generatingQuiz,
+        loading: generatingQuiz, //boolean
         fn: generateQuizFn,
-        data: quizData,
+        data: quizData, //array of questions that contains question, options, correctAnswer, explanation
     } = useFetch(generateQuiz);
 
     useEffect(() => {
@@ -36,11 +36,12 @@ export default function Quiz() {
         }
     }, [quizData]); //if quizData changes, initialize answers array 
 
+    //Handle answer  
     const handleAnswer = (answer) => {
-    const newAnswers = [...answers]; // Create a copy of the answers array first
-    newAnswers[currentQuestion] = answer;
-    setAnswers(newAnswers);
-  };
+        const newAnswers = [...answers]; // Create a copy of the answers array first
+        newAnswers[currentQuestion] = answer;
+        setAnswers(newAnswers);
+    };
 
     // loder
     if (generatingQuiz) {
@@ -91,7 +92,28 @@ export default function Quiz() {
                         </div>
                     ))}
                 </RadioGroup>
+
+                {showExplanation && (
+                    <div className="mt-4 p-4 bg-muted rounded-lg">
+                        <p className="font-medium">Explanation:</p>
+                        <p className="text-muted-foreground">{question.explanation}</p>
+                    </div>
+                )}
             </CardContent>
+            <CardFooter className="flex justify-between">
+
+                {!showExplanation && (
+                    <Button
+                        onClick={() => setShowExplanation(true)}
+                        variant="outline"
+                        disabled={!answers[currentQuestion]}
+                    >
+                        Show Explanation
+                    </Button>
+                )}
+
+                <Button>{currentQuestion < quizData.length - 1 ? "Next Question" : "Finish Quiz"}</Button>
+            </CardFooter>
 
         </Card>
     );
