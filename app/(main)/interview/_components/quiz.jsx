@@ -36,6 +36,12 @@ export default function Quiz() {
         }
     }, [quizData]); //if quizData changes, initialize answers array 
 
+    const handleAnswer = (answer) => {
+    const newAnswers = [...answers]; // Create a copy of the answers array first
+    newAnswers[currentQuestion] = answer;
+    setAnswers(newAnswers);
+  };
+
     // loder
     if (generatingQuiz) {
         return <BarLoader className="mt-4" width={"100%"} color="gray" />;
@@ -63,18 +69,30 @@ export default function Quiz() {
         );
     }
 
+    const question = quizData[currentQuestion]; //contains all generated questions
+
+
     return (
         <Card className="mx-2">
-                <CardHeader>
-                    <CardTitle>Ready to test your knowledge?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-muted-foreground">
-                        This quiz contains 10 questions specific to your industry and
-                        skills. Take your time and choose the best answer for each question.
-                    </p>
-                </CardContent>
-                
-            </Card>
+            <CardHeader>
+                <CardTitle>Question {currentQuestion + 1} of {quizData.length}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <p className="text-lg font-medium">{question.question}</p>
+                <RadioGroup
+                    onValueChange={handleAnswer}
+                    value={answers[currentQuestion]}
+                    className="space-y-2"
+                >
+                    {question.options.map((option, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                            <RadioGroupItem value={option} id={`option-${index}`} />
+                            <Label htmlFor={`option-${index}`}>{option}</Label>
+                        </div>
+                    ))}
+                </RadioGroup>
+            </CardContent>
+
+        </Card>
     );
 }
