@@ -1,3 +1,4 @@
+"use client";
 import { Brain, Target, Trophy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -10,9 +11,10 @@ export default function StatsCards({ assessments }) {
     };
 
     const getLatestAssessment = () => {
-        if (!assessments?.length) return <p className="text-sm text-muted-foreground ">No assessments found.</p>;
-        return assessments[0];
-    };
+        if (!assessments?.length) return null; 
+        return assessments[assessments.length-1].quizScore.toFixed(1);
+    }; //<p className="text-sm text-muted-foreground ">No assessments found.</p>
+
 
     const getTotalQuestions = () => {
         if (!assessments?.length) return 0;
@@ -55,7 +57,7 @@ export default function StatsCards({ assessments }) {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">
-                        {getLatestAssessment()?.quizScore.toFixed(1) || 0}%
+                        {getLatestAssessment() || 0}%
                     </div>
                     <p className="text-xs text-muted-foreground">Most recent quiz</p>
                 </CardContent>

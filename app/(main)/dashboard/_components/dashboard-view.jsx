@@ -81,7 +81,7 @@ const DashboardView = ({ insights }) => {
 
       {/* Market Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Market Outlook
@@ -97,7 +97,7 @@ const DashboardView = ({ insights }) => {
         </Card>
 
         {/*Industry Growth Cards */}
-        <Card>
+        <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Industry Growth
@@ -113,7 +113,7 @@ const DashboardView = ({ insights }) => {
         </Card>
 
         {/* Demand Level */}
-        <Card>
+        <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
             <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
@@ -129,7 +129,7 @@ const DashboardView = ({ insights }) => {
         </Card>
                
         {/* Top Skills */}
-        <Card>
+        <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Top Skills</CardTitle>
             <Brain className="h-4 w-4 text-muted-foreground" />
