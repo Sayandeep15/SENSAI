@@ -112,7 +112,7 @@ export default function Quiz() {
     // If no quiz data, show start quiz card
     if (!quizData) {
         return (
-            <Card className="mx-2">
+            <Card className="mx-2 hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
                 <CardHeader>
                     <CardTitle>Ready to test your knowledge?</CardTitle>
                 </CardHeader>
