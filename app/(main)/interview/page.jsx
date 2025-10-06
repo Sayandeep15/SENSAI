@@ -4,6 +4,7 @@ import { getAssessments } from "@/actions/interview";
 import StatsCards from "./_components/stats-cards";
 import PerformanceChart from "./_components/performace-chart";
 import QuizList from "./_components/quiz-list";
+import ScrollToTopButton from "./_components/scrollToTopButton";
 
 export default async function InterviewPrepPage() {
   const assessments = await getAssessments();
@@ -19,6 +20,7 @@ export default async function InterviewPrepPage() {
         <StatsCards assessments={assessments} />
         <PerformanceChart assessments={assessments} />
         <QuizList assessments={assessments} />
+        <ScrollToTopButton />
       </div>
     </div>
   );
