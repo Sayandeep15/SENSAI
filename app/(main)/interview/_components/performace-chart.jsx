@@ -20,6 +20,7 @@ import {
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
+
 export default function PerformanceChart({ assessments }) {
     const [chartData, setChartData] = useState([]);
 
@@ -34,6 +35,10 @@ export default function PerformanceChart({ assessments }) {
     }, [assessments]);
 
     const maxScore = Math.max(...assessments.map(a => a.quizScore));
+    const totalScore = (assessments.length > 0) ?(assessments.reduce((sum, a) => sum + a.quizScore, 0)):0;
+    const avgScore = (assessments.length > 0) ? (totalScore / assessments.length) : 0;
+
+
 
     return (
         <Card>
@@ -69,6 +74,7 @@ export default function PerformanceChart({ assessments }) {
                                 }}
                             />
                             <ReferenceLine y={maxScore} label="Max" stroke="red" />
+                            <ReferenceLine y={avgScore} label="Avg" stroke="#99ff33" />
                             <Line
                                 type="monotone"
                                 dataKey="score"
@@ -77,7 +83,13 @@ export default function PerformanceChart({ assessments }) {
                             />
                         </LineChart>
                     </ResponsiveContainer>
+                    
                 </div>
+                <div className="flex-row mt-2">
+                    <p className="text-xs flex flex-col "> Max: {maxScore}%</p>
+                    <p className="text-xs ">Avg: {avgScore}%</p>
+                </div>
+                
             </CardContent>
         </Card>
     );
