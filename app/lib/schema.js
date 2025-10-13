@@ -32,7 +32,7 @@ export const contactSchema = z.object({
   email: z.string().email("Invalid email address"),
   mobile: z.string().optional(),
   linkedin: z.string().url("Invalid URL").optional(),
-    github: z.string().url("Invalid URL").optional(),
+  github: z.string().url("Invalid URL").optional(),
 });
 
 export const entrySchema = z
