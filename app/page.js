@@ -144,8 +144,8 @@ export default function LandingPage() {
                     <div className="flex items-center space-x-4 mb-4">
                       <div className="relative h-12 w-12 flex-shrink-0">
                         <Image
-                          width={40}
-                          height={40}
+                          width={80}
+                          height={80}
                           src={testimonial.image}
                           alt={testimonial.author}
                           className="rounded-full object-cover border-2 border-primary/20"
@@ -161,13 +161,13 @@ export default function LandingPage() {
                         </p>
                       </div>
                     </div>
-                    <blockquote>
+                    <blockquote >
                       <p className="text-muted-foreground italic relative">
-                        <span className="text-3xl text-primary absolute -top-4 -left-2">
+                        <span className="text-xl text-primary absolute -top-4 -left-2">
                           &quot;
                         </span>
                         {testimonial.quote}
-                        <span className="text-3xl text-primary absolute -bottom-4">
+                        <span className="text-xl text-primary absolute -bottom-4">
                           &quot;
                         </span>
                       </p>
