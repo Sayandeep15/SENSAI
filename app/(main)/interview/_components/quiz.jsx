@@ -97,7 +97,7 @@ export default function Quiz() {
 
     // loder
     if (generatingQuiz) {
-        return <BarLoader className="mt-4" width={"100%"} color="gray" />;
+        return <BarLoader className="mt-4" width={"100%"} color="#a0dcff" />;
     }
 
     // Show results if quiz is completed

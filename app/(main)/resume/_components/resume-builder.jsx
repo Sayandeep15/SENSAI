@@ -174,9 +174,10 @@ export default function ResumeBuilder({ initialContent }) {
         </h1>
         <div className="space-x-2">
           <Button
-            variant="destructive"
+            variant="outline"
             onClick={handleSubmit(onSubmit)}
             disabled={isSaving}
+            
           >
             {isSaving ? (
               <>

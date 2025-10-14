@@ -23,7 +23,7 @@ export default function QuizResult({
       <CardContent className="space-y-6">
         {/* Score Overview */}
         <div className="text-center space-y-2">
-          <h3 className="text-2xl font-bold">{result.quizScore.toFixed(1)}%</h3>
+          <h3 className="text-2xl font-semibold">Your Score is:  {result.quizScore.toFixed(1)}%</h3>
           <Progress value={result.quizScore} className="w-full" />
         </div>
 

@@ -59,7 +59,7 @@ export default function PerformanceChart({ assessments }) {
                                 content={({ active, payload }) => {
                                     if (active && payload?.length) {
                                         return (
-                                            <div className="bg-background border rounded-lg p-2 shadow-md">
+                                            <div className="backdrop-blur-md bg-blue-400/20 border rounded-lg p-2 shadow-md">
 
                                                 <p className="text-sm font-medium">
                                                     Score: {payload[0].value}%
@@ -73,13 +73,13 @@ export default function PerformanceChart({ assessments }) {
                                     return null;
                                 }}
                             />
-                            <ReferenceLine y={maxScore} label="Max" stroke="red" />
-                            <ReferenceLine y={avgScore} label="Avg" stroke="#99ff33" />
+                            <ReferenceLine y={maxScore} label="Max" stroke="#BEF7FF" />
+                            <ReferenceLine y={avgScore} label="Avg" stroke="#458CFF" />
                             <Line
                                 type="monotone"
                                 dataKey="score"
                                 stroke="#66ccff"
-                                strokeWidth={2}
+                                strokeWidth={2.5}
                             />
                         </LineChart>
                     </ResponsiveContainer>

@@ -179,9 +179,9 @@ const DashboardView = ({ insights }) => {
                     return null;
                   }}
                 />
-                <Bar dataKey="min" fill="#00ffff" name="Min Salary (K)" radius={[10, 10, 0, 0]}   />
-                <Bar dataKey="median" fill="#00a1c1" name="Median Salary (K)" radius={[10, 10, 0, 0]}   />
-                <Bar dataKey="max" fill="#004c6d" name="Max Salary (K)"  radius={[10, 10, 0, 0]}  />
+                <Bar dataKey="min" fill="#BEF7FF" name="Min Salary (K)" radius={[10, 10, 0, 0]}   />
+                <Bar dataKey="median" fill="#82c2ff" name="Median Salary (K)" radius={[10, 10, 0, 0]}   />
+                <Bar dataKey="max" fill="#458CFF" name="Max Salary (K)"  radius={[10, 10, 0, 0]}  />
               </BarChart>
             </ResponsiveContainer>
           </div>
