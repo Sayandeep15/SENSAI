@@ -42,7 +42,7 @@ const HeroSection = () => {
         </div>
         <div className="flex justify-center space-x-4">
           <Link href="/dashboard" passHref>
-            <Button size="lg"  className="px-8 ">
+            <Button size="lg"  className="px-4 ">
               Get Started
             </Button>
           </Link>
