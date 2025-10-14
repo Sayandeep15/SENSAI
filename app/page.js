@@ -33,7 +33,7 @@ export default function LandingPage() {
   return (
     <>
 
-<div style={{ width: '100%', height: '600px', position: 'absolute' }}>
+<div className="-z-10" style={{ width: '100%', height: '600px', position: 'absolute'}}>
   <LightRays
     raysOrigin="top-center"
     raysColor="#00ffff"
