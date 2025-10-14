@@ -41,7 +41,7 @@ export default async function Header() {
             <Link href="/dashboard">
               <Button
                 variant="outline"
-                className="hidden md:inline-flex items-center gap-2"
+                className="hidden md:inline-flex items-center gap-2 "
               >
                 <LayoutDashboard className="h-4 w-4" />
                 Industry Insights
@@ -96,7 +96,7 @@ export default async function Header() {
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10",
+                  avatarBox: "w-15 h-15",
                   userButtonPopoverCard: "shadow-xl",
                   userPreviewMainIdentifier: "font-semibold",
                 },

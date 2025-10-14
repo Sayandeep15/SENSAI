@@ -162,13 +162,14 @@ const DashboardView = ({ insights }) => {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip
+                cursor={{ fill: 'rgba(0, 0, 0, 0.2)' }}
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-background border rounded-lg p-2 shadow-md">
+                        <div className="backdrop-blur-md bg-black/80  border rounded-lg p-2 shadow-md">
                           <p className="font-medium">{label}</p>
                           {payload.map((item) => (
-                            <p key={item.name} className="text-sm">
+                            <p key={item.name} className="text-sm text-muted-foreground">
                               {item.name}: ${item.value}K
                             </p>
                           ))}
@@ -178,9 +179,9 @@ const DashboardView = ({ insights }) => {
                     return null;
                   }}
                 />
-                <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
-                <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
-                <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
+                <Bar dataKey="min" fill="#00ffff" name="Min Salary (K)" radius={[10, 10, 0, 0]}   />
+                <Bar dataKey="median" fill="#00a1c1" name="Median Salary (K)" radius={[10, 10, 0, 0]}   />
+                <Bar dataKey="max" fill="#004c6d" name="Max Salary (K)"  radius={[10, 10, 0, 0]}  />
               </BarChart>
             </ResponsiveContainer>
           </div>
