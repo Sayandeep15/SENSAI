@@ -21,7 +21,7 @@ const nextConfig = {
         hostname: "randomuser.me",
         port: "",                 // leave blank (important on Vercel)
         pathname: "/api/portraits/**",
-        domains: ["randomuser.me"] 
+        
       },
     ],
   },
