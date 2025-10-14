@@ -3,7 +3,7 @@
 // export default function Page() {
 //   return <SignIn />;
 // }
-
+"use client";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { SignIn } from "@clerk/nextjs";
