@@ -20,7 +20,8 @@ const nextConfig = {
         protocol: "https",
         hostname: "randomuser.me",
         port: "",                 // leave blank (important on Vercel)
-        pathname: "/api/portraits/**", // add this to allow all portrait images
+        pathname: "/api/portraits/**",
+        domains: ["randomuser.me"] 
       },
     ],
   },
