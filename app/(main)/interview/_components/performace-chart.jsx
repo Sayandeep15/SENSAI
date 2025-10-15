@@ -26,16 +26,19 @@ export default function PerformanceChart({ assessments }) {
 
     useEffect(() => {
         if (assessments) {
-            const formattedData = assessments.map((assessment) => ({
+            const formattedData = assessments.map((assessment, index) => ({
+                id: index,
                 date: format(new Date(assessment.createdAt), "MMM dd"),
                 score: assessment.quizScore,
             }));
             setChartData(formattedData);
+
         }
     }, [assessments]);
 
+
     const maxScore = Math.max(...assessments.map(a => a.quizScore));
-    const totalScore = (assessments.length > 0) ?(assessments.reduce((sum, a) => sum + a.quizScore, 0)):0;
+    const totalScore = (assessments.length > 0) ? (assessments.reduce((sum, a) => sum + a.quizScore, 0)) : 0;
     const avgScore = (assessments.length > 0) ? (totalScore / assessments.length) : 0;
 
 
@@ -53,20 +56,19 @@ export default function PerformanceChart({ assessments }) {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="date" className="text-sm " />
+                            <XAxis dataKey="id"
+                                tickFormatter={(i) => chartData[i]?.date || ""}
+                                interval={0} className="text-sm " />
                             <YAxis domain={[0, 100]} className="text-sm " />
                             <Tooltip
                                 content={({ active, payload }) => {
                                     if (active && payload?.length) {
+                                        const { score, date } = payload[0].payload;
+
                                         return (
                                             <div className="backdrop-blur-md bg-blue-400/20 border rounded-lg p-2 shadow-md">
-
-                                                <p className="text-sm font-medium">
-                                                    Score: {payload[0].value}%
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {payload[0].payload.date}
-                                                </p>
+                                                <p className="text-sm font-medium">Score: {score}%</p>
+                                                <p className="text-xs text-muted-foreground">{date}</p>
                                             </div>
                                         );
                                     }
@@ -83,13 +85,13 @@ export default function PerformanceChart({ assessments }) {
                             />
                         </LineChart>
                     </ResponsiveContainer>
-                    
+
                 </div>
                 <div className="flex-row mt-2">
                     <p className="text-xs flex flex-col "> Max: {maxScore}%</p>
                     <p className="text-xs ">Avg: {avgScore}%</p>
                 </div>
-                
+
             </CardContent>
         </Card>
     );

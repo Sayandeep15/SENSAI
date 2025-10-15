@@ -5,10 +5,12 @@ export default function Layout({ children }) {
   return (
     <div className="px-5">
       <Suspense
-        fallback={<BarLoader className="mt-4" width={"100%"} color="gray" />}
+        fallback={<BarLoader className="mt-4" width={"100%"} color="white" />}
       >
         {children}
       </Suspense>
     </div>
   );
 }
+
+// #458CFF
