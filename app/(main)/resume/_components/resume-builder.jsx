@@ -10,6 +10,7 @@ import {
   Loader2,
   Monitor,
   Save,
+  Mail, Phone, Linkedin, Github
 } from "lucide-react";
 import { toast } from "sonner";
 import MDEditor from "@uiw/react-md-editor";
@@ -87,11 +88,10 @@ export default function ResumeBuilder({ initialContent }) {
   const getContactMarkdown = () => {
     const { contactInfo } = formValues;
     const parts = [];
-    if (contactInfo.email) parts.push(`📧 ${contactInfo.email}`);
-    if (contactInfo.mobile) parts.push(`📱 ${contactInfo.mobile}`);
-    if (contactInfo.linkedin)
-      parts.push(`💼 [LinkedIn](${contactInfo.linkedin})`);
-    if (contactInfo.github) parts.push(`🐦 [GitHub](${contactInfo.github})`);
+    if (contactInfo.email) parts.push(`✉︎ ${contactInfo.email}`);
+    if (contactInfo.mobile) parts.push(`☏ ${contactInfo.mobile}`);
+    if (contactInfo.linkedin) parts.push(`[LinkedIn](${contactInfo.linkedin})`);
+    if (contactInfo.github) parts.push(`[GitHub](${contactInfo.github})`);
 
     return parts.length > 0
       ? `## <div align="center">${user.fullName}</div>
@@ -177,7 +177,7 @@ export default function ResumeBuilder({ initialContent }) {
             variant="outline"
             onClick={handleSubmit(onSubmit)}
             disabled={isSaving}
-            
+
           >
             {isSaving ? (
               <>
