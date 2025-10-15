@@ -39,7 +39,7 @@ export default function PerformanceChart({ assessments }) {
 
     const maxScore = Math.max(...assessments.map(a => a.quizScore));
     const totalScore = (assessments.length > 0) ? (assessments.reduce((sum, a) => sum + a.quizScore, 0)) : 0;
-    const avgScore = (assessments.length > 0) ? (totalScore / assessments.length) : 0;
+    const avgScore = (assessments.length > 0) ? (totalScore / assessments.length).toFixed(1) : 0;
 
 
 
@@ -88,8 +88,8 @@ export default function PerformanceChart({ assessments }) {
 
                 </div>
                 <div className="flex-row mt-2">
-                    <p className="text-xs flex flex-col "> Max: {maxScore}%</p>
-                    <p className="text-xs ">Avg: {avgScore}%</p>
+                    <p className="text-xs flex flex-col "> Highest: {maxScore.toFixed(1)}%</p>
+                    <p className="text-xs ">Avgerage: {avgScore}%</p>
                 </div>
 
             </CardContent>

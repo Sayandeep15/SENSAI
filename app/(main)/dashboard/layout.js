@@ -8,10 +8,12 @@ export default function Layout({ children }) {
         <h1 className="text-5xl font-bold ">Industry Insights</h1>
       </div>
       <Suspense
-        fallback={<PulseLoader className="mt-4" width={"100%"} color="gray" />}
+        fallback={<PulseLoader className="mt-4" width={"100%"} color="white" />}
       >
         {children}
       </Suspense>
     </div>
   );
 }
+
+// #458cff 
