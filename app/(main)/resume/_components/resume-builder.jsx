@@ -10,7 +10,7 @@ import {
   Loader2,
   Monitor,
   Save,
-  Mail, Phone, Linkedin, Github
+  Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
 import MDEditor from "@uiw/react-md-editor";
@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { saveResume } from "@/actions/resume";
+import { saveResume, improveSummery } from "@/actions/resume";
 import { EntryForm } from "./entry-form";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
@@ -39,6 +39,7 @@ export default function ResumeBuilder({ initialContent }) {
     control,
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm({
@@ -60,12 +61,41 @@ export default function ResumeBuilder({ initialContent }) {
     error: saveError,
   } = useFetch(saveResume);
 
+  const {
+    loading: isImprovingSummary,
+    fn: improveSummeryFn,
+    data: improvedSummary,
+    error: improveSummaryError,
+  } = useFetch(improveSummery);
+
   // Watch form fields for preview updates
   const formValues = watch();
+  
+  
 
   useEffect(() => {
     if (initialContent) setActiveTab("preview");
   }, [initialContent]);
+
+  // handle the improvement summary
+  useEffect(() => {
+    if (improvedSummary && !isImprovingSummary) {
+      setValue("summary", improvedSummary);
+      toast.success("Professional summary improved successfully!");
+    }
+    if (improveSummaryError) {
+      toast.error(improveSummaryError.message || "Failed to improve summary");
+    }
+  }, [improvedSummary, improveSummaryError, isImprovingSummary, setValue]);
+
+   const handleImproveSummary = async () => {
+    const professionalSummary = watch("summary");
+    if (!professionalSummary) {
+      toast.error("Please enter a professional summary first");
+      return;
+    }
+    await improveSummeryFn(professionalSummary);
+  };
 
   // Update preview content when form values change
   useEffect(() => {
@@ -295,6 +325,25 @@ export default function ResumeBuilder({ initialContent }) {
               {errors.summary && (
                 <p className="text-sm text-red-500">{errors.summary.message}</p>
               )}
+              <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleImproveSummary}
+              disabled={isImprovingSummary || !watch("summary")}
+            >
+              {isImprovingSummary ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Improving...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Improve with AI
+                </>
+              )}
+            </Button>
             </div>
 
             {/* Skills */}
