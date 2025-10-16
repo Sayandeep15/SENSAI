@@ -145,42 +145,91 @@ export default function ResumeBuilder({ initialContent }) {
 
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const generatePDF = async () => {
-    setIsGenerating(true);
-    try {
-      const html2pdf = (await import("html2pdf.js")).default;
-      const element = document.getElementById("resume-pdf");
+  // const generatePDF = async () => {
+  //   setIsGenerating(true);
+  //   try {
+  //     const html2pdf = (await import("html2pdf.js")).default;
+  //     const element = document.getElementById("resume-pdf");
 
-      // 🩹 Replace lab() / color-mix() colors
-      // const allEls = element.querySelectorAll("*");
-      // allEls.forEach((el) => {
-      //   const cs = window.getComputedStyle(el);
-      //   if (cs.color.includes("lab") || cs.color.includes("color-mix")) {
-      //     el.style.color = "#000";
-      //   }
-      //   if (
-      //     cs.backgroundColor.includes("lab") ||
-      //     cs.backgroundColor.includes("color-mix")
-      //   ) {
-      //     el.style.backgroundColor = "#fff";
-      //   }
-      // });
+  //     const allEls = element.querySelectorAll("*");
+  //     allEls.forEach((el) => {
+  //       const cs = window.getComputedStyle(el);
+  //       if (cs.color.includes("lab") || cs.color.includes("color-mix")) {
+  //         el.style.color = "#000";
+  //       }
+  //       if (
+  //         cs.backgroundColor.includes("lab") ||
+  //         cs.backgroundColor.includes("color-mix")
+  //       ) {
+  //         el.style.backgroundColor = "#fff";
+  //       }
+  //     });
 
-      const opt = {
-        margin: [15, 15],
-        filename: "resume.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
+  //     const opt = {
+  //       margin: [15, 15],
+  //       filename: "resume.pdf",
+  //       image: { type: "jpeg", quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+  //     };
 
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error("PDF generation error:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  //     await html2pdf().set(opt).from(element).save();
+  //   } catch (error) {
+  //     console.error("PDF generation error:", error);
+  //   } finally {
+  //     setIsGenerating(false);
+  //   }
+  // };
+
+const generatePDF = async () => {
+  setIsGenerating(true);
+  let styleFix;
+
+  try {
+    const html2pdf = (await import("html2pdf.js")).default;
+    const element = document.getElementById("resume-pdf");
+
+    // Inject temporary style override to prevent lab() / color-mix() errors
+    styleFix = document.createElement("style");
+    styleFix.innerHTML = `
+      * {
+        color: #111 !important;
+        background: #fff !important;
+        border-color: #ddd !important;
+        box-shadow: none !important;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        color: #000 !important;
+      }
+    `;
+    element.appendChild(styleFix);
+
+    //  Hide buttons or unwanted UI during PDF generation
+    const hiddenEls = element.querySelectorAll("button, .no-print");
+    hiddenEls.forEach((el) => (el.style.display = "none"));
+
+    const opt = {
+      margin: [15, 15],
+      filename: "resume.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    };
+
+    // Generate and save PDF
+    await html2pdf().set(opt).from(element).save();
+
+    // Restore hidden elements after PDF is done
+    hiddenEls.forEach((el) => (el.style.display = ""));
+  } catch (error) {
+    console.error("PDF generation error:", error);
+  } finally {
+    // Always clean up injected styles
+    if (styleFix) styleFix.remove();
+    setIsGenerating(false);
+  }
+};
+
 
   const onSubmit = async (data) => {
     try {
