@@ -1,5 +1,5 @@
 "use client";
-import { Brain, Target, Trophy } from "lucide-react";
+import { Brain, Target, Trophy , Award} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function StatsCards({ assessments }) {
@@ -11,8 +11,8 @@ export default function StatsCards({ assessments }) {
     };
 
     const getLatestAssessment = () => {
-        if (!assessments?.length) return null; 
-        return assessments[assessments.length-1].quizScore.toFixed(1);
+        if (!assessments?.length) return null;
+        return assessments[assessments.length - 1].quizScore.toFixed(1);
     }; //<p className="text-sm text-muted-foreground ">No assessments found.</p>
 
 
@@ -22,21 +22,10 @@ export default function StatsCards({ assessments }) {
             (sum, assessment) => sum + assessment.questions.length, 0);
     };
 
-    return (
-        <div className="grid gap-4 md:grid-cols-3">
-            <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
-                    <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-                    <Trophy className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                    <div className="text-2xl font-bold">{getAverageScore()}%</div>
-                    <p className="text-xs text-muted-foreground">
-                        Across all assessments
-                    </p>
-                </CardContent>
-            </Card>
+    const Highest = Math.max(...assessments.map(a => a.quizScore));
 
+    return (
+        <div className="grid gap-4 md:grid-cols-4">
             <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -51,6 +40,21 @@ export default function StatsCards({ assessments }) {
             </Card>
 
             <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
+                    <CardTitle className="text-sm font-medium">Average Score</CardTitle>
+                    <Award className="h-4.5 w-4.5 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{getAverageScore()}%</div>
+                    <p className="text-xs text-muted-foreground">
+                        Across all assessments
+                    </p>
+                </CardContent>
+            </Card>
+
+
+
+            <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Latest Score</CardTitle>
                     <Target className="h-4 w-4 text-muted-foreground" />
@@ -60,6 +64,19 @@ export default function StatsCards({ assessments }) {
                         {getLatestAssessment() || 0}%
                     </div>
                     <p className="text-xs text-muted-foreground">Most recent quiz</p>
+                </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] transition-ease duration-300 ">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
+                    <CardTitle className="text-sm font-medium">Highest Score</CardTitle>
+                    <Trophy className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{Highest}%</div>
+                    <p className="text-xs text-muted-foreground">
+                        Across all assessments
+                    </p>
                 </CardContent>
             </Card>
         </div>
